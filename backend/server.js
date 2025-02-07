@@ -1,4 +1,5 @@
 import cookieParser from "cookie-parser";
+import compression from "compression";
 import express from "express";
 import cors from "cors";
 import { errorHandler } from "./middlewares/error-handler.js";
@@ -29,6 +30,8 @@ const corsOptions = {
   },
   credentials: true,
 };
+
+app.use(compression({ brotli: { quality: 11 }, level: 8, threshold: "1kb" }));
 
 // Express Middleware
 app.use(express.json({ limit: "5mb" }));
