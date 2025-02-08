@@ -11,24 +11,24 @@ connectDb();
 
 const app = express();
 
-const allowedOrigins = ["https://ticketly-v2-ui.vercel.app"];
+// const allowedOrigins = ["https://ticketly-v2-ui.vercel.app"];
 
-const corsOptions = {
-  origin: (origin, callback) => {
-    // Allow requests with no origin (e.g., mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      return callback(null, true);
-    }
-    callback(new Error(`Not allowed by CORS: ${origin}`));
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-};
+// const corsOptions = {
+//   origin: (origin, callback) => {
+//     // Allow requests with no origin (e.g., mobile apps or curl requests)
+//     if (!origin) return callback(null, true);
+//     if (allowedOrigins.indexOf(origin) !== -1) {
+//       return callback(null, true);
+//     }
+//     callback(new Error(`Not allowed by CORS: ${origin}`));
+//   },
+//   credentials: true,
+//   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+//   allowedHeaders: ["Content-Type", "Authorization"],
+// };
 // Cors
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
+app.use(cors());
+app.options("*", cors());
 
 app.use(compression({ brotli: { quality: 11 }, level: 8, threshold: "1kb" }));
 
