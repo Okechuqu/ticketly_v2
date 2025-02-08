@@ -21,7 +21,7 @@ const port = process.env.PORT || 3000;
 
 const allowedOrigins = [
   process.env.FRONTEND_URL,
-  "https://ticketly-v2-f.vercel.app",
+  "https://ticketly-v2-ui.vercel.app",
 ].filter(Boolean);
 
 const corsOptions = {
