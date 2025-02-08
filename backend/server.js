@@ -11,10 +11,7 @@ connectDb();
 
 const app = express();
 
-const allowedOrigins = [
-  process.env.FRONTEND_URL,
-  "https://ticketly-v2-ui.vercel.app",
-].filter(Boolean);
+const allowedOrigins = ["https://ticketly-v2-ui.vercel.app"];
 
 const corsOptions = {
   origin: (origin, callback) => {
