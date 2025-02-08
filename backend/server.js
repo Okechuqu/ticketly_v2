@@ -26,6 +26,9 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };
+// Cors
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 app.use(compression({ brotli: { quality: 11 }, level: 8, threshold: "1kb" }));
 
@@ -33,10 +36,6 @@ app.use(compression({ brotli: { quality: 11 }, level: 8, threshold: "1kb" }));
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ limit: "5mb", extended: false }));
 app.use(cookieParser());
-
-// Cors
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
 
 // Routes
 app.use("/uploads", express.static("uploads"));
