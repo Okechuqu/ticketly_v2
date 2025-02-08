@@ -6,18 +6,10 @@ import { errorHandler } from "./middlewares/error-handler.js";
 import ticketRoutes from "./routes/ticket-routes.js";
 import connectDb from "./config/db-connection.js";
 import userRoutes from "./routes/user-routes.js";
-import path from "path";
-import { fileURLToPath } from "url";
 
 connectDb();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-// const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
 const app = express();
-
-const port = process.env.PORT || 3000;
 
 const allowedOrigins = [
   process.env.FRONTEND_URL,
@@ -45,29 +37,19 @@ app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ limit: "5mb", extended: false }));
 app.use(cookieParser());
 
+// Cors
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
 
-app.use("/uploads", express.static("uploads"));
-
 // Routes
+app.use("/uploads", express.static("uploads"));
 app.use("/api/users", userRoutes);
 app.use("/api/tickets", ticketRoutes);
-
 app.get("/", (req, res) => {
-  res.send("Hello, world! This is the home page.");
+  res.send("Welcome to the Ticketly API server.");
 });
-
-// Serve static assets in production
-/* if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "dist")));
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "dist", "index.html"));
-  });
-} */
 
 // Error handling middleware
 app.use(errorHandler);
 
-app.listen(port, () => console.log(`Server listening on port ${port}`));
+export default app;
