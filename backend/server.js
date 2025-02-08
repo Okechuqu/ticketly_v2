@@ -21,7 +21,7 @@ const port = process.env.PORT || 3000;
 
 const corsOptions = {
   origin: (origin, callback) => {
-    const allowedOrigins = ["http://localhost:2025"];
+    const allowedOrigins = [process.env.FRONTEND_URL];
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
