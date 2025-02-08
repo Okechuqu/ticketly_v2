@@ -2,8 +2,11 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 
+// Use '/tmp/uploads/' in production (for example, on Vercel) and 'uploads/' locally.
+const uploadDir =
+  process.env.NODE_ENV === "production" ? "/tmp/uploads/" : "uploads/";
+
 // Ensure uploads directory exists
-const uploadDir = "uploads/";
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
