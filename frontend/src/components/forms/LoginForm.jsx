@@ -104,7 +104,7 @@ const Login = () => {
 
         {/* Tab Contents */}
         <div className="mt-4">
-          {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
+          
           <div className="tab-content px-4 shadow-md rounded-md">
             <form onSubmit={handleSubmit}>
               {active === "email" ? (

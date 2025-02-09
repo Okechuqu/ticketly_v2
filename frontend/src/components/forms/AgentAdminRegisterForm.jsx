@@ -106,7 +106,6 @@ const AgentAdminRegisterForm = () => {
         </Link>
         {/* <!-- Card --> */}
         <div className="w-full max-w-2xl p-6 space-y-8 sm:p-8 bg-white rounded-lg shadow dark:bg-gray-800">
-          {error && <div className="text-red-500 text-sm mb-4">{error}</div>}{" "}
           <form className="mt-8 space-y-6 " onSubmit={handleSubmit}>
             <div className="flex flex-row gap-8 ">
               <div>

@@ -35,7 +35,7 @@ export const registration = async (userData) => {
     console.log("Registration successful:", data);
 
     // Notify user
-    alert("Registered successfully! Please check your email for confirmation.");
+    alert("Registered successfully!");
 
     return data;
   } catch (error) {
