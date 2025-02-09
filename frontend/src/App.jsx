@@ -53,7 +53,7 @@ function App() {
             />
 
             <Route
-              path="/"
+              path="/create"
               element={userId ? <TicketForm /> : <Navigate to="/login" />}
             />
           </Routes>
