@@ -7,6 +7,7 @@ import {
   FaCamera,
   FaHouseChimney,
   FaDoorOpen,
+  FaIcons,
 } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { updateUserProfile } from "../../services/user-service/update-user-profile.js";
@@ -229,7 +230,7 @@ function UserProfile({ userId }) {
                     href="#"
                     className={`${color} hover:opacity-80 transition-opacity p-2 rounded-full bg-gray-50 hover:bg-gray-100`}
                   >
-                    <Icon className="w-5 h-5 md:w-6 md:h-6" />
+                    <FaIcons className="w-5 h-5 md:w-6 md:h-6" />
                   </a>
                 ))}
               </div>

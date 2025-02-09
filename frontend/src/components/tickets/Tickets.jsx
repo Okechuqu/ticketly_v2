@@ -14,7 +14,7 @@ import { deleteTicket } from "../../services/ticket-service/deleteTicket.js";
 import { user_profile } from "../../services/user-service/profile.js";
 import { FormField } from "../../utils/form-fields.jsx";
 import { token, userRole } from "../../utils/util.js";
-import { FaXmark } from "react-icons/fa6";
+import { FaTicket, FaUser, FaXmark } from "react-icons/fa6";
 
 const Tickets = ({ userId }) => {
   // Data state
@@ -290,7 +290,7 @@ const Tickets = ({ userId }) => {
                               to={`/profile/${ticket.created_by.id}`}
                               className="flex items-center gap-2"
                             >
-                              <UserIcon className="h-5 w-5 text-gray-400" />
+                              <FaUser className="h-5 w-5 text-gray-400" />
                               {userEmails[ticket.created_by] || "Loading..."}
                             </Link>
                           </td>
@@ -352,7 +352,7 @@ const Tickets = ({ userId }) => {
           ) : (
             <div className="text-center py-16">
               <div className="text-gray-400 mb-4">
-                <TicketIcon className="h-24 w-24 mx-auto" />
+                <FaTicket className="h-24 w-24 mx-auto" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
                 No tickets found
