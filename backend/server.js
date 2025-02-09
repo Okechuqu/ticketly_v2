@@ -13,7 +13,7 @@ const app = express();
 
 const allowedOrigins = [
   process.env.FRONTEND_URL,
-  "https://ticketly-v2-api.vercel.app",
+  "https://ticketly-v2-client.onrender.com",
 ];
 
 const corsOptions = {
