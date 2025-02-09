@@ -86,6 +86,7 @@ function UserProfile({ userId }) {
   }, [userId]); // Dependency array to trigger effect on userId change
 
   const handleProfileUpdate = async (e) => {
+    setLoading(true);
     e.preventDefault();
 
     const formData = new FormData();
@@ -115,6 +116,7 @@ function UserProfile({ userId }) {
       console.error("Error updating profile", error);
       alert(error.message);
     }
+    setLoading(false);
   };
 
   const handleFileChange = (e) => {
