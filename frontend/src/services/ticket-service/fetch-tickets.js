@@ -51,7 +51,6 @@ export const fetchAllTickets = async (searchQuery = "") => {
     }
 
     const data = await res.json();
-    console.log("Data from the API", data);
     return data;
   } catch (error) {
     console.log("Error fetching all tickets:", error.message);

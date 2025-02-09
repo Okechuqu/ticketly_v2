@@ -1,4 +1,5 @@
-import { FaLeftLong } from "react-icons/fa6";
+import { FaLeftLong, FaPencil, FaTrash, FaUpload } from "react-icons/fa6";
+import { FaExclamationCircle, FaPlusCircle } from "react-icons/fa";
 import React, { useEffect, useState, useCallback } from "react";
 import { createTicket } from "../../services/ticket-service/create-tickets.js";
 import { resizeImage } from "../../utils/resize-image.js";
@@ -145,135 +146,193 @@ const TicketForm = ({
   } text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`;
 
   return (
-    <div>
-      <button
-        onClick={() => window.history.back() && window.location.reload()}
-        className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors mt-2"
-      >
-        <FaLeftLong />
-      </button>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center p-4">
+      <div className="bg-gray-200 rounded-3xl shadow-2xl max-w-3xl w-full overflow-hidden">
+        {/* Header with Back Button */}
+        <div className="relative">
+          <button
+            onClick={() => window.history.back()}
+            className="absolute top-4 left-4 p-2 bg-blue-100 backdrop-blur-sm rounded-full shadow transition transform hover:scale-105 hover:bg-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            <FaLeftLong className="h-6 w-6 text-blue-700" />
+            <span className="sr-only">Go back</span>
+          </button>
+          <div className="p-8 border-b border-gray-200 text-center">
+            <h2 className="text-3xl font-bold text-gray-800">Ticket Form</h2>
+            <p className="mt-2 text-gray-600">
+              {id ? "Update your ticket below." : "Create a new ticket."}
+            </p>
+          </div>
+        </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
-        {isLoading ? (
-          <div className="my-4 flex justify-center">
-            <div className="relative h-16 w-16">
-              <div className="absolute inset-0 animate-[ring_2.5s_cubic-bezier(0.77,0,0.18,1)_infinite] rounded-full border-[6px] border-solid border-neutral-200 [border-style:unset]">
-                <div className="absolute inset-[-6px] rounded-full bg-[conic-gradient(from_90deg_at_50%_50%,#fff_0%,transparent_50%,transparent_55%,#2563eb_100%)] opacity-75 [mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] [mask-composite:xor]"></div>
-              </div>
-              <div className="absolute inset-0 animate-[spin_2.5s_cubic-bezier(0.77,0,0.18,1)_infinite] rounded-full [mask:radial-gradient(farthest-side,#0000_calc(100%_-_6px),#000_0)]">
-                <div className="absolute inset-0 bg-[linear-gradient(#2563eb_0%,#3b82f6_10%,#60a5fa_30%,rgba(96,165,250,0)_80%)]"></div>
+        {/* Form Content */}
+        <form onSubmit={handleSubmit} className="p-8 space-y-6">
+          {isLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent"></div>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {/* Image Preview */}
+              {imagePreview && (
+                <div className="relative">
+                  <img
+                    src={imagePreview}
+                    alt="Ticket preview"
+                    className="w-full h-64 object-cover rounded-lg border border-gray-300 shadow-sm transition transform hover:scale-105"
+                    onError={(e) => {
+                      e.target.src =
+                        "https://placehold.co/600x400?text=Invalid+Image";
+                    }}
+                  />
+                  {errors.screenshot && (
+                    <p className="mt-2 text-red-500 text-sm flex items-center gap-1">
+                      <FaExclamationCircle className="h-4 w-4" />
+                      {errors.screenshot}
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {/* Form Fields Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {id && (
+                  <div className="md:col-span-2">
+                    <FormField
+                      label="Ticket ID"
+                      value={id}
+                      className="bg-gray-100 text-gray-500"
+                      disabled
+                    />
+                  </div>
+                )}
+
+                {/* File Upload */}
+                <div className="md:col-span-1">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Screenshot
+                  </label>
+                  <div className="flex items-center gap-4">
+                    <label className="cursor-pointer">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        className="hidden"
+                        disabled={readonly}
+                      />
+                      <div className={formControl}>
+                        <FaUpload className="inline-block mr-2 h-5 w-5" />
+                        {fileName || "Upload file"}
+                      </div>
+                    </label>
+                    {fileName && (
+                      <span className="text-sm text-gray-500 truncate">
+                        {fileName}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Status Dropdown */}
+                <div className="md:col-span-1">
+                  <FormField
+                    label="Status"
+                    type="select"
+                    value={formData.status}
+                    options={STATUS_OPTIONS}
+                    onChange={(e) => handleChange("status", e.target.value)}
+                    error={errors.status}
+                    className={formControl}
+                    disabled={readonly}
+                  />
+                </div>
+
+                {/* Summary Textarea */}
+                <div className="md:col-span-2">
+                  <FormField
+                    label="Summary"
+                    type="textarea"
+                    value={formData.summary}
+                    error={errors.summary}
+                    onChange={(e) => handleChange("summary", e.target.value)}
+                    className={formControl}
+                    placeholder="Describe the issue in detail..."
+                    disabled={readonly}
+                    required
+                  />
+                </div>
+
+                {/* Date Fields */}
+                <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <FormField
+                    label="Created Date"
+                    value={formatDate(createDate)}
+                    className={formControl}
+                    disabled
+                  />
+                  <FormField
+                    label="Updated Date"
+                    value={formatDate(updateDate)}
+                    className={formControl}
+                    disabled
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <div>
-            {/* Image Preview */}
-            {imagePreview && (
-              <div className="mt-2 border rounded-lg overflow-hidden">
-                <img
-                  src={imagePreview}
-                  alt="Ticket screenshot"
-                  className="w-full h-48 object-contain bg-gray-100"
-                  onError={(e) => {
-                    e.target.src =
-                      "https://placehold.co/600x400?text=Invalid+Image";
-                  }}
-                />
-              </div>
-            )}
-            {errors.screenshot && (
-              <p className="text-red-500 text-sm mt-1">{errors.screenshot}</p>
-            )}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {id && (
-                <FormField
-                  label="Ticket ID"
-                  value={id}
-                  className={formControl}
-                  disabled
-                />
-              )}
-              <FormField
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                label="Screenshot"
-                className={formControl}
-                disabled={readonly}
-              />
-              {fileName && (
-                <p className="text-gray-600 text-sm">Selected: {fileName}</p>
-              )}
-              <FormField
-                label="Summary"
-                type="textarea"
-                value={formData.summary}
-                error={errors.summary}
-                onChange={(e) => handleChange("summary", e.target.value)}
-                className={formControl}
-                placeholder="Enter detailed description..."
-                disabled={readonly}
-                required
-              />
-              <FormField
-                label="Status"
-                type="select"
-                value={formData.status}
-                options={STATUS_OPTIONS}
-                onChange={(e) => handleChange("status", e.target.value)}
-                className={formControl}
-                error={errors.status}
-                disabled={readonly}
-              />
-              <FormField
-                label="Created Date"
-                value={formatDate(createDate)}
-                className={formControl}
-                disabled
-              />
-              <FormField
-                label="Updated Date"
-                value={formatDate(updateDate)}
-                className={formControl}
-                disabled
-              />
+          )}
+
+          {/* Form Actions */}
+          {!readonly && (
+            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4 border-t border-gray-200">
+              <button
+                type="button"
+                onClick={() => {
+                  clearField();
+                  onClear();
+                }}
+                className="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full transition-all flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                disabled={isLoading}
+              >
+                <FaTrash className="h-5 w-5" />
+                Clear Form
+              </button>
+              <button
+                type="submit"
+                className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-all flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                disabled={isLoading}
+              >
+                {id ? (
+                  <>
+                    <FaPencil className="h-5 w-5" />
+                    Update Ticket
+                  </>
+                ) : (
+                  <>
+                    <FaPlusCircle className="h-5 w-5" />
+                    {isLoading ? "Creating..." : "Create Ticket"}
+                  </>
+                )}
+              </button>
             </div>
-          </div>
-        )}
+          )}
 
-        {!readonly && (
-          <div className="flex gap-4 justify-center mt-6">
-            <button
-              type="button"
-              onClick={() => {
-                clearField();
-                onClear();
-              }}
-              className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
-              disabled={isLoading}
-            >
-              Clear
-            </button>
-            <button
-              type="submit"
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-              disabled={isLoading}
-            >
-              {id
-                ? "Update Ticket"
-                : isLoading
-                ? "Creating Ticket"
-                : "Create Ticket"}
-            </button>
-          </div>
-        )}
-
-        {Object.keys(errors).length > 0 && (
-          <div className="mt-4 p-4 bg-red-50 text-red-700 rounded-lg">
-            Please fix the validation errors before submitting
-          </div>
-        )}
-      </form>
+          {/* Validation Errors */}
+          {Object.keys(errors).length > 0 && (
+            <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+              <FaExclamationCircle className="h-5 w-5 text-red-600" />
+              <div>
+                <h3 className="text-red-800 font-semibold">
+                  Validation errors occurred
+                </h3>
+                <p className="text-red-700 text-sm mt-1">
+                  Please fix the highlighted fields before submitting
+                </p>
+              </div>
+            </div>
+          )}
+        </form>
+      </div>
     </div>
   );
 };

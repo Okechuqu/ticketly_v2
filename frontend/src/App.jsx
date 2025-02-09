@@ -14,7 +14,7 @@ function App() {
 
   return (
     <>
-      <div className="min-h-screen py-16 items-center justify-center bg-gray-300">
+      <div className="min-h-screen items-center justify-center bg-gray-300">
         <BrowserRouter>
           <Routes>
             <Route path="*" element={<Navigate to="/" />} />

@@ -188,56 +188,65 @@ function UserProfile({ userId }) {
   // CSS classes for form elements
   const label = "col-span-12 md:col-span-4 lg:col-span-3 text-gray-700";
   const formControl =
-    "col-span-12 md:col-span-8 lg:col-span-9 w-full p-2 border rounded";
+    "w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all";
 
   return (
-    <div className="p-6 bg-gray-100 rounded-lg shadow-md">
-      <div className="flex flex-wrap">
+    <div className="p-4 md:p-8 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+      <div className="flex flex-col xl:flex-row gap-6 max-w-7xl mx-auto">
         {/* Left Column */}
-        <div className="w-full xl:w-1/3 p-2">
-          <div className="bg-white shadow rounded-lg">
-            <div className="p-6 flex flex-col items-center">
-              <img
-                src={imagePreview || userProfile?.display_picture || reactLogo}
-                alt="Profile"
-                className="rounded-full w-32 h-32 object-cover"
-              />
-              {/* {userProfile?.phone} */}
-              <h2 className="mt-4 text-xl font-bold">
+        <div className="w-full xl:w-96 xl:flex-shrink-0">
+          <div className="bg-white shadow-xl rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
+            <div className="p-6 md:p-8 flex flex-col items-center">
+              <div className="relative group">
+                <img
+                  src={
+                    imagePreview || userProfile?.display_picture || reactLogo
+                  }
+                  alt="Profile"
+                  className="rounded-full w-24 h-24 md:w-32 md:h-32 object-cover border-4 border-white shadow-lg transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+
+              <h2 className="mt-6 text-2xl font-bold text-gray-800 tracking-tight">
                 {userProfile?.first_name || "NAME"}{" "}
-                {userProfile?.last_name || ""}{" "}
+                {userProfile?.last_name || ""}
               </h2>
-              <h3 className="text-gray-600">{userProfile?.email || "EMAIL"}</h3>
-              <div className="flex mt-4 space-x-4">
-                <a href="#" className="text-gray-700 hover:text-gray-900">
-                  <FaXTwitter />
-                </a>
-                <a href="#" className="text-blue-600 hover:text-blue-800">
-                  <FaFacebookF />
-                </a>
-                <a href="#" className="text-pink-500 hover:text-pink-700">
-                  <FaInstagram />
-                </a>
-                <a href="#" className="text-blue-700 hover:text-blue-900">
-                  <FaLinkedinIn />
-                </a>
+              <h3 className="mt-2 text-gray-600 font-medium text-sm md:text-base">
+                {userProfile?.email || "EMAIL"}
+              </h3>
+
+              <div className="mt-6 flex space-x-5">
+                {[
+                  { icon: FaXTwitter, color: "text-gray-700" },
+                  { icon: FaFacebookF, color: "text-blue-600" },
+                  { icon: FaInstagram, color: "text-pink-500" },
+                  { icon: FaLinkedinIn, color: "text-blue-700" },
+                ].map(({ icon: Icon, color }, idx) => (
+                  <a
+                    key={idx}
+                    href="#"
+                    className={`${color} hover:opacity-80 transition-opacity p-2 rounded-full bg-gray-50 hover:bg-gray-100`}
+                  >
+                    <Icon className="w-5 h-5 md:w-6 md:h-6" />
+                  </a>
+                ))}
               </div>
             </div>
           </div>
         </div>
 
         {/* Right Column */}
-        <div className="w-full xl:w-2/3 p-2">
-          <div className="bg-white shadow rounded-lg">
-            <div className="flex p-6 pb-0 justify-between">
-              <ul className="flex border-b border-gray-200 space-x-4 ">
+        <div className="flex-1">
+          <div className="bg-white shadow-xl rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between p-6 md:p-8 border-b border-gray-100">
+              <ul className="flex space-x-3 md:space-x-4 overflow-x-auto pb-2 md:pb-0">
                 {tabs.map((tab) => (
                   <li key={tab.id}>
                     <button
-                      className={`pb-2 px-2 border-b-2 transition-colors ${
+                      className={`px-3 py-1.5 rounded-lg font-semibold text-sm md:text-base transition-colors ${
                         active === tab.id
-                          ? "border-blue-500 text-blue-600"
-                          : "border-transparent text-gray-600 hover:text-blue-600"
+                          ? "bg-blue-100 text-blue-600"
+                          : "text-gray-500 hover:bg-gray-50"
                       }`}
                       onClick={() => setActive(tab.id)}
                     >
@@ -246,8 +255,8 @@ function UserProfile({ userId }) {
                   </li>
                 ))}
               </ul>
-              <div className="flex justify-center space-x-6">
-                {/* Logout Button */}
+
+              <div className="mt-4 md:mt-0 flex space-x-3 w-full md:w-auto">
                 <button
                   onClick={logOut}
                   className="relative group px-6 py-3 overflow-hidden rounded-lg bg-gradient-to-br from-red-500 to-red-600 text-white font-semibold shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-2xl"
@@ -260,7 +269,6 @@ function UserProfile({ userId }) {
                   </span>
                 </button>
 
-                {/* Home Button */}
                 <button
                   onClick={goToHome}
                   className="relative group px-6 py-3 overflow-hidden rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 text-white font-semibold shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-2xl"
@@ -276,209 +284,182 @@ function UserProfile({ userId }) {
             </div>
 
             {/* Content Sections */}
-            <div className="w-full p-2">
-              {/* Overview Tab */}
+            <div className="p-6 md:p-8">
               {active === "overview" && (
-                <div className={` bg-white shadow rounded-lg p-6 pt-0`}>
-                  <h3 className="text-lg font-semibold mb-4">About</h3>
-                  <p className="text-gray-600 italic mb-6">
-                    Sunt est soluta temporibus accusantium neque nam maiores
-                    cumque temporibus. Tempora libero non est unde veniam est
-                    qui dolor...
-                  </p>
-
-                  <h3 className="text-lg font-semibold mb-4">
-                    Profile Details
-                  </h3>
-
-                  <div className="grid grid-cols-12 gap-4 mb-3">
-                    <div className="col-span-12 md:col-span-4 rounded-4xl w-30 lg:col-span-3 text-gray-100 px-2 bg-blue-500">
-                      First Name
-                    </div>
-                    <div className="col-span-12 md:col-span-8 lg:col-span-9">
-                      {userProfile?.first_name || "Kelvin"}
-                    </div>
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold text-gray-800">About</h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      Sunt est soluta temporibus accusantium neque nam maiores
+                      cumque temporibus. Tempora libero non est unde veniam est
+                      qui dolor...
+                    </p>
                   </div>
 
-                  <div className="grid grid-cols-12 gap-4 mb-3">
-                    <div className="col-span-12 md:col-span-4 rounded-4xl w-30 lg:col-span-3 text-gray-100 px-2 bg-blue-500">
-                      Last Name
-                    </div>
-                    <div className="col-span-12 md:col-span-8 lg:col-span-9">
-                      {userProfile?.last_name || "Anderson"}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-12 gap-4 mb-3">
-                    <div className="col-span-12 md:col-span-4 rounded-4xl w-30 lg:col-span-3 text-gray-100 px-2 bg-blue-500">
-                      Email
-                    </div>
-                    <div className="col-span-12 md:col-span-8 lg:col-span-9">
-                      {userProfile?.email || "kanderson@example.com"}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-12 gap-4 mb-3">
-                    <div className="col-span-12 md:col-span-4 rounded-4xl w-30 lg:col-span-3 text-gray-100 px-2 bg-blue-500">
-                      Phone
-                    </div>
-                    <div className="col-span-12 md:col-span-8 lg:col-span-9">
-                      {userProfile?.phone || "+1 123-456-7890"}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-12 gap-4 mb-3">
-                    <div className="col-span-12 md:col-span-4 rounded-4xl w-30 lg:col-span-3 text-gray-100 px-2 bg-blue-500">
-                      Role
-                    </div>
-                    <div className="col-span-12 md:col-span-8 lg:col-span-9">
-                      {userProfile?.role || "Client"}
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-bold text-gray-800">
+                      Profile Details
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {[
+                        {
+                          label: "First Name",
+                          value: userProfile?.first_name || "Kelvin",
+                        },
+                        {
+                          label: "Last Name",
+                          value: userProfile?.last_name || "Anderson",
+                        },
+                        {
+                          label: "Email",
+                          value: userProfile?.email || "kanderson@example.com",
+                        },
+                        {
+                          label: "Phone",
+                          value: userProfile?.phone || "+1 123-456-7890",
+                        },
+                        { label: "Role", value: userProfile?.role || "Client" },
+                      ].map(({ label, value }, idx) => (
+                        <div key={idx} className="bg-gray-50 p-4 rounded-xl">
+                          <div className="text-sm font-medium text-gray-500 mb-1">
+                            {label}
+                          </div>
+                          <div className="font-medium text-gray-800">
+                            {value}
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
               )}
+
               {/* Edit Profile Tab */}
               {active === "edit" && (
-                <div className={` bg-white shadow rounded-lg p-6 pt-0`}>
+                <form onSubmit={handleProfileUpdate} className="space-y-6">
                   {message && (
-                    <p className="text-lg font-semibold mb-4">{message}</p>
+                    <div className="p-4 bg-blue-50 text-blue-700 rounded-lg">
+                      {message}
+                    </div>
                   )}
-                  <form onSubmit={handleProfileUpdate}>
-                    <div className="grid  gap-4 mb-4">
-                      <label className="col-span-12 md:col-span-4 lg:col-span-3 text-gray-700">
-                        Profile Image
-                      </label>
-                      <div className="col-span-12 md:col-span-8 lg:col-span-9">
-                        <div className="flex flex-col  space-x-4">
-                          <img
-                            src={
-                              imagePreview ||
-                              userProfile?.display_picture ||
-                              reactLogo
-                            }
-                            alt="Profile"
-                            className="w-16 h-16 rounded-full"
-                          />
-                          <div>
-                            <button
-                              className="px-3 mx-1 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                              onClick={handleClick}
-                              type="button"
-                            >
-                              <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handleFileChange}
-                                className="hidden"
-                                ref={fileInputRef}
-                              />
-                              <FaCamera />
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
 
-                    {/* Form Fields */}
-                    <div className="grid gap-4 mb-4">
-                      <FormField
-                        label="First Name"
-                        className={formControl}
-                        labelClassName={label}
-                        type="text"
-                        name="first_name"
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        required
+                  <div className="flex items-center space-x-6">
+                    <div className="relative group">
+                      <img
+                        src={
+                          imagePreview ||
+                          userProfile?.display_picture ||
+                          reactLogo
+                        }
+                        alt="Profile"
+                        className="w-24 h-24 rounded-full border-4 border-white shadow-lg"
                       />
-
-                      <FormField
-                        label="Last Name"
-                        className={formControl}
-                        labelClassName={label}
-                        type="text"
-                        name="last_name"
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
-                        required
-                      />
-
-                      <FormField
-                        label="Email"
-                        className={formControl}
-                        labelClassName={label}
-                        type="email"
-                        name="email"
-                        value={userProfile?.email}
-                        disabled
-                      />
-
-                      <FormField
-                        label="Phone Number"
-                        className={formControl}
-                        labelClassName={label}
-                        type="text"
-                        name="phone"
-                        value={userProfile?.phone}
-                        disabled
-                      />
-                    </div>
-
-                    <div className="text-center mt-6">
                       <button
-                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                        type="submit"
+                        type="button"
+                        onClick={handleClick}
+                        className="absolute bottom-0 right-0 bg-white p-2 rounded-full shadow-md hover:shadow-lg transition-shadow"
                       >
-                        Save Changes
+                        <FaCamera className="w-5 h-5 text-gray-700 hover:text-gray-950" />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleFileChange}
+                          className="hidden"
+                          ref={fileInputRef}
+                        />
                       </button>
                     </div>
-                  </form>
-                </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <FormField
+                      label="First Name"
+                      type="text"
+                      name="first_name"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      labelClassName={label}
+                      className={formControl}
+                      required
+                    />
+
+                    <FormField
+                      label="Last Name"
+                      type="text"
+                      name="last_name"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      labelClassName={label}
+                      className={formControl}
+                      required
+                    />
+
+                    <FormField
+                      label="Email"
+                      className={formControl}
+                      labelClassName={label}
+                      type="email"
+                      name="email"
+                      value={userProfile?.email}
+                      disabled
+                    />
+
+                    <FormField
+                      label="Phone Number"
+                      className={formControl}
+                      labelClassName={label}
+                      type="text"
+                      name="phone"
+                      value={userProfile?.phone}
+                      disabled
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full md:w-auto px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition-colors duration-300"
+                  >
+                    Save Changes
+                  </button>
+                </form>
               )}
 
               {/* Password Change Tab */}
               {active === "password" && (
-                <div className={` bg-white shadow rounded-lg p-6 pt-0`}>
-                  <form>
-                    <div className="grid  gap-4 mb-4">
-                      <FormField
-                        label="Current Password"
-                        className={formControl}
-                        labelClassName={label}
-                        type="password"
-                        placeholder="Your Current Password"
-                        name="password"
-                        value={userProfile?.password}
-                        // onChange={handleChange}
-                        required
-                      />
+                <form className="space-y-6">
+                  <div className="space-y-4">
+                    <FormField
+                      label="Current Password"
+                      type="password"
+                      placeholder="••••••••"
+                      className={formControl}
+                      required
+                    />
 
-                      <FormField
-                        label="New Password"
-                        className={formControl}
-                        labelClassName={label}
-                        type="password"
-                        placeholder="Your New Password"
-                        name="new_password"
-                        value={userProfile?.new_password}
-                        // onChange={handleChange}
-                        required
-                      />
+                    <FormField
+                      label="New Password"
+                      type="password"
+                      placeholder="••••••••"
+                      className={formControl}
+                      required
+                    />
 
-                      <FormField
-                        label="Confirm New Password"
-                        className={formControl}
-                        labelClassName={label}
-                        type="password"
-                        placeholder="Confirm New Password"
-                        name="confirm_new_password"
-                        value={userProfile?.confirm_new_password}
-                        // onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </form>
-                </div>
+                    <FormField
+                      label="Confirm New Password"
+                      type="password"
+                      placeholder="••••••••"
+                      className={formControl}
+                      required
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full md:w-auto px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition-colors duration-300"
+                  >
+                    Update Password
+                  </button>
+                </form>
               )}
             </div>
           </div>
