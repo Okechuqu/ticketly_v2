@@ -157,23 +157,16 @@ const Tickets = ({ userId }) => {
     <>
       <div className="flex flex-row px-8 items-center justify-between bg-gray-400">
         {userProfile && (
-          <button
-            onClick={() => {
-              navigate("/profile");
-              window.location.reload();
-            }}
+          <Link
+            to="/profile"
             className="text-lg uppercase font-bold text-blue-700"
           >
             {userProfile.data.first_name}
-          </button>
+          </Link>
         )}
         {CAN_CREATE_TICKET && (
           <Link
             to="/create"
-            // onClick={() => {
-            //   navigate("/create");
-            //   window.location.reload();
-            // }}
             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors mt-2"
           >
             Create Ticket
@@ -276,15 +269,12 @@ const Tickets = ({ userId }) => {
                       </td>
                       {CAN_EDIT_TICKET && (
                         <td className="px-6 py-4">
-                          <button
+                          <Link
                             className="cursor-pointer transition-colors duration-300 hover:text-yellow-300"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(`/profile/${ticket.created_by.id}`);
-                            }}
+                            to={`/profile/${ticket.created_by.id}`}
                           >
                             {userEmails[ticket.created_by] || "Loading..."}
-                          </button>
+                          </Link>
                         </td>
                       )}
                       {CAN_DELETE_TICKET && (
@@ -346,15 +336,12 @@ const Tickets = ({ userId }) => {
                 {error}
               </div>
               {!userProfile && (
-                <button
-                  onClick={() => {
-                    navigate("/login");
-                    window.location.reload();
-                  }}
+                <Link
+                  to="/login"
                   className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors mt-2"
                 >
                   LOGIN
-                </button>
+                </Link>
               )}
             </div>
           )}

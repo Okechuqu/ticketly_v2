@@ -17,13 +17,9 @@ router.use(validateToken);
 
 // Route to get all tickets or create a new ticket
 router
-  .get("/", authorizeRoles("client", "agent", "admin"), getTickets)
-  .post(
-    "/create",
-    authorizeRoles("client"),
-    upload.single("screenshot"),
-    createTicket
-  );
+  .route("/")
+  .get(authorizeRoles("client", "agent", "admin"), getTickets)
+  .post(authorizeRoles("client"), upload.single("screenshot"), createTicket);
 
 // Route to get, update or delete a ticket by ID
 router

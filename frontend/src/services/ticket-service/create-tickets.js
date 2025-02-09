@@ -16,7 +16,7 @@ export const createTicket = async (ticket) => {
   }
 
   try {
-    const res = await fetch(`${API_URL}/api/tickets/create`, {
+    const res = await fetch(`${API_URL}/api/tickets`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
