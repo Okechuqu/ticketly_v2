@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaArrowCircleLeft, FaArrowCircleRight, FaTrash } from "react-icons/fa";
 import ReactModal from "react-modal";
 import { fetchAllTickets } from "../../services/ticket-service/fetch-tickets.js";
@@ -168,15 +168,16 @@ const Tickets = ({ userId }) => {
           </button>
         )}
         {CAN_CREATE_TICKET && (
-          <button
-            onClick={() => {
-              navigate("/create");
-              window.location.reload();
-            }}
+          <Link
+            to="/create"
+            // onClick={() => {
+            //   navigate("/create");
+            //   window.location.reload();
+            // }}
             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors mt-2"
           >
             Create Ticket
-          </button>
+          </Link>
         )}
         <h1 className="text-2xl uppercase font-bold text-red-700 text-center">
           Tickets
