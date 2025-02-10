@@ -362,9 +362,17 @@ const Tickets = ({ userId }) => {
                   ? "Try adjusting your search terms."
                   : "Create your first ticket to get started."}
               </p>
-              <Link to="/users" className="text-blue-600 hover:text-blue-800">
-                See All Accounts
-              </Link>
+              {filteredTickets.map(
+                (ticket) =>
+                  ticket.role !== "client" && (
+                    <Link
+                      to="/users"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      See All Accounts
+                    </Link>
+                  )
+              )}
             </div>
           )}
         </main>
