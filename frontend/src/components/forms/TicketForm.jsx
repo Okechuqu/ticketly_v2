@@ -3,7 +3,6 @@ import { FaExclamationCircle, FaPlusCircle } from "react-icons/fa";
 import React, { useEffect, useState, useCallback } from "react";
 import { createTicket } from "../../services/ticket-service/create-tickets.js";
 import { resizeImage } from "../../utils/resize-image.js";
-import { formatDate } from "../../utils/date-util.js";
 import { FormField } from "../../utils/form-fields.jsx";
 
 const TicketForm = ({
@@ -263,21 +262,6 @@ const TicketForm = ({
                   />
                 </div>
 
-                {/* Date Fields */}
-                <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <FormField
-                    label="Created Date"
-                    value={formatDate(createDate)}
-                    className={formControl}
-                    disabled
-                  />
-                  <FormField
-                    label="Updated Date"
-                    value={formatDate(updateDate)}
-                    className={formControl}
-                    disabled
-                  />
-                </div>
               </div>
             </div>
           )}
@@ -297,10 +281,11 @@ const TicketForm = ({
                 <FaTrash className="h-5 w-5" />
                 Clear Form
               </button>
+
               <button
                 type="submit"
                 className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-all flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                disabled={isLoading}
+                disabled={(isLoading, errors.screenshot)}
               >
                 {id ? (
                   <>
@@ -310,7 +295,11 @@ const TicketForm = ({
                 ) : (
                   <>
                     <FaPlusCircle className="h-5 w-5" />
-                    {isLoading ? "Creating..." : "Create Ticket"}
+                    {isLoading
+                      ? "Creating..."
+                      : errors.screenshot
+                      ? "File too large..."
+                      : "Create Ticket"}
                   </>
                 )}
               </button>
@@ -326,7 +315,8 @@ const TicketForm = ({
                   Validation errors occurred
                 </h3>
                 <p className="text-red-700 text-sm mt-1">
-                  Please fix the highlighted fields before submitting
+                  Likely an Image Error, please clear form and select an image
+                  not bigger than 3MB
                 </p>
               </div>
             </div>

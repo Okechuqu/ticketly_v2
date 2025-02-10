@@ -5,9 +5,13 @@ import Ticket from "../../models/tickets-model.js";
 // @route GET /api/tickets
 // @access Agent/Admin for all tickets, Client for their own
 export const getTickets = asyncHandler(async (req, res) => {
+  // Destructure query parameters with defaults
   const { page = 1, limit = 5, search = "", status, created_by } = req.query;
 
-  const startIndex = (page - 1) * limit;
+  // Convert page and limit to numbers explicitly
+  const pageNumber = Number(page) || 1;
+  const limitNumber = Number(limit) || 5;
+  const startIndex = (pageNumber - 1) * limitNumber;
 
   //   Base query base on user role
   const query = {
@@ -18,11 +22,11 @@ export const getTickets = asyncHandler(async (req, res) => {
   };
 
   try {
-    const totalTickets = await Ticket.countDocuments({ query });
+    const totalTickets = await Ticket.countDocuments(query);
     const tickets = await Ticket.find(query)
       .sort({ createdAt: -1 })
       .skip(startIndex)
-      .limit(Number(limit))
+      .limit(limitNumber)
       .select(req.user.role === "client" ? "-created_by" : "");
 
     res.status(200).json({
@@ -30,28 +34,10 @@ export const getTickets = asyncHandler(async (req, res) => {
       data: tickets,
       pagination: {
         totalTickets,
-        totalPages: Math.ceil(totalTickets / limit),
-        currentPage: Number(page),
+        totalPages: Math.ceil(totalTickets / limitNumber),
+        currentPage: pageNumber,
       },
     });
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ error: true, message: "Server Error" });
-  }
-});
-
-// @desc Get one ticket
-// @route GET /api/tickets/:id
-// @access Agent and Admin
-export const getTicketById = asyncHandler(async (req, res) => {
-  try {
-    const ticket = await Ticket.findById(req.params.id);
-
-    if (!ticket) {
-      return res.status(404).json({ error: true, message: "Ticket not found" });
-    }
-
-    res.status(200).json({ success: true, data: ticket });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ error: true, message: "Server Error" });

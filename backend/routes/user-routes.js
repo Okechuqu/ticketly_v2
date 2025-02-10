@@ -8,7 +8,9 @@ import { updateUserProfile } from "../controllers/users-controllers/update-profi
 import { getUserProfile } from "../controllers/users-controllers/get-user-profile.js";
 import { updateTicket } from "../controllers/ticket-controllers/update-tickets.js";
 import { registerUser } from "../controllers/users-controllers/register-user.js";
+import { getAllUsers } from "../controllers/users-controllers/get-all-users.js";
 import { verifyEmail } from "../controllers/users-controllers/verify-email.js";
+import { deleteUser } from "../controllers/users-controllers/delete-users.js";
 import { logoutUser } from "../controllers/users-controllers/logout-user.js";
 import { loginUser } from "../controllers/users-controllers/login-user.js";
 import {
@@ -42,7 +44,9 @@ router
     upload.single("display_picture"),
     updateUserProfile
   )
+  .get("/users", validateToken, authorizeRoles("admin", "agent"), getAllUsers)
   .get("/verify-email/:token", verifyEmail)
-  .get("/refresh-token", refreshAccessToken);
+  .get("/refresh-token", refreshAccessToken)
+  .delete("/:id?", validateToken, authorizeRoles("admin", "agent"), deleteUser);
 
 export default router;

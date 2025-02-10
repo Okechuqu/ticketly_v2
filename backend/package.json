@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "node app",
-    "dev": "node  --watch --env-file=.env app"
+    "dev": "node  --watch --env-file=.env app",
+    "prod": "node api-server"
   },
   "keywords": [],
   "author": "",

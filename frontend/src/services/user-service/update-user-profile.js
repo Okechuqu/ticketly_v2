@@ -34,7 +34,7 @@ export const updateUserProfile = async (id, formData) => {
     }
     return await res.json();
   } catch (error) {
-    alert("Failed to update user profile:", error.message);
+    alert(error.message);
     throw error;
   }
 };

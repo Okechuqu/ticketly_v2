@@ -32,7 +32,6 @@ export const registration = async (userData) => {
 
     // Parse response
     const data = await res.json();
-    console.log("Registration successful:", data);
 
     // Notify user
     alert("Registered successfully!");

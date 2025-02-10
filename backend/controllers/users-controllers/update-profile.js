@@ -22,7 +22,7 @@ export const updateUserProfile = expressAsyncHandler(async (req, res) => {
   if (!req.file) {
     return res
       .status(400)
-      .json({ error: true, message: "No image found missing file" });
+      .json({ error: true, message: "Update profile with a new image" });
   }
 
   // Handle the file upload

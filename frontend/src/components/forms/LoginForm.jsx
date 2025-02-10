@@ -46,8 +46,8 @@ const Login = () => {
       // Set error message based on active tab
       setError(
         active === "email"
-          ? "Invalid email or password."
-          : "Invalid phone number or password."
+          ? "Invalid email or password." || error.message
+          : "Invalid phone number or password." || error.message
       );
     }
     setLoading(false);
@@ -61,7 +61,7 @@ const Login = () => {
   return (
     <div className="flex flex-col items-center justify-center px-6 pt-8 mx-auto md:h-screen pt:mt-0 bg-gray-900">
       <Link
-        to=""
+        to="/aareg"
         className="flex items-center justify-center mb-8 text-2xl font-semibold lg:mb-10 dark:text-white"
       >
         <img src={reactLogo} className="mr-4 h-11" alt="Okechuqu Logo" />
@@ -104,8 +104,8 @@ const Login = () => {
 
         {/* Tab Contents */}
         <div className="mt-4">
-          
           <div className="tab-content px-4 shadow-md rounded-md">
+            {<>{error}</>}
             <form onSubmit={handleSubmit}>
               {active === "email" ? (
                 <FormField

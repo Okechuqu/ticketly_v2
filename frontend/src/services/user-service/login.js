@@ -68,7 +68,6 @@ export const loging_in = async (userData) => {
         return;
       }
 
-      alert(errorMessage);
       throw new Error(errorMessage);
     }
 
@@ -88,7 +87,6 @@ export const loging_in = async (userData) => {
     return data;
   } catch (error) {
     console.error("Error logging in:", error.message);
-    alert(error.message);
     throw error;
   }
 };

@@ -7,6 +7,7 @@ import Tickets from "./components/tickets/Tickets";
 import Login from "./components/forms/LoginForm";
 import reactLogo from "/react.svg";
 import VerifyEmailPage from "./components/users/VerifyEmailPage";
+import AllUsers from "./components/users/AllUsers";
 
 function App() {
   // Retrieve userId from localStorage
@@ -18,6 +19,8 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="*" element={<Navigate to="/" />} />
+
+            <Route path="/users" element={<AllUsers />} />
 
             <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
 

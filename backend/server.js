@@ -2,14 +2,19 @@ import cookieParser from "cookie-parser";
 import compression from "compression";
 import express from "express";
 import cors from "cors";
-import { errorHandler } from "./middlewares/error-handler.js";
+// import { errorHandler } from "./middlewares/error-handler.js";
 import ticketRoutes from "./routes/ticket-routes.js";
 import connectDb from "./config/db-connection.js";
 import userRoutes from "./routes/user-routes.js";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 
 connectDb();
 
 const app = express();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const allowedOrigins = [
   process.env.FRONTEND_URL,
@@ -47,6 +52,17 @@ app.use("/api/tickets", ticketRoutes);
 app.get("/", (req, res) => {
   res.send("Welcome to the Ticketly API server.");
 });
+
+// Serve static assets if in production
+if (process.env.NODE_ENV === "production") {
+  // Serve the static files from the React app build directory
+  app.use(express.static(join(__dirname, "client/build")));
+
+  // The catch-all handler: for any request that doesn't match an API route, send back index.html
+  app.get("*", (req, res) => {
+    res.sendFile(join(__dirname, "client/build", "index.html"));
+  });
+}
 
 // Error handling middleware
 // app.use(errorHandler);
