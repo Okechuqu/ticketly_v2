@@ -56,11 +56,11 @@ app.get("/", (req, res) => {
 // Serve static assets if in production
 if (process.env.NODE_ENV === "production") {
   // Serve the static files from the React app build directory
-  app.use(express.static(join(__dirname, "client/build")));
+  app.use(express.static(join(__dirname, "frontend/dist")));
 
   // The catch-all handler: for any request that doesn't match an API route, send back index.html
   app.get("*", (req, res) => {
-    res.sendFile(join(__dirname, "client/build", "index.html"));
+    res.sendFile(join(__dirname, "frontend/dist", "index.html"));
   });
 }
 
