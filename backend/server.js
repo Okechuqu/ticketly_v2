@@ -7,14 +7,14 @@ import ticketRoutes from "./routes/ticket-routes.js";
 import connectDb from "./config/db-connection.js";
 import userRoutes from "./routes/user-routes.js";
 import { fileURLToPath } from "url";
-import { dirname, join } from "path";
+import path from "path";
 
 connectDb();
 
 const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = path.dirname(__filename);
 
 const allowedOrigins = [
   process.env.FRONTEND_URL,
@@ -56,11 +56,12 @@ app.get("/", (req, res) => {
 // Serve static assets if in production
 if (process.env.NODE_ENV === "production") {
   // Serve the static files from the React app build directory
-  app.use(express.static(join(__dirname, "dist")));
+  const staticPath = path.join(__dirname, "../frontend/dist");
+  app.use(express.static(staticPath));
 
-  // The catch-all handler: for any request that doesn't match an API route, send back index.html
+  // 3. Handle client-side routing (must be last)
   app.get("*", (req, res) => {
-    res.sendFile(join(__dirname, "dist", "index.html"));
+    res.sendFile(path.join(staticPath, "index.html"));
   });
 }
 
